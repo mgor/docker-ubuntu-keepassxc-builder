@@ -2,9 +2,14 @@ FROM mgor/docker-ubuntu-pkg-builder:RELEASE
 
 MAINTAINER Mikael Göransson <github@mgor.se>
 
+RUN locale-gen en_US.UTF-8
+
 ENV DEBIAN_FRONTEND noninteractive
 ENV BUILD_DIRECTORY /usr/local/src
 ENV BUILD_SCRIPT /usr/local/bin/build.sh
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
 
 # Using apt-get due to warning with apt:
 # WARNING: apt does not have a stable CLI interface. Use with caution in scripts.

@@ -26,6 +26,12 @@ export VERSION
 
 run dh_make -p "${PACKAGE}_${VERSION}" -s -y --createorig
 
+# Create overrides for lintian
+sudo -Eu "${USER}" -H tee "debian/${PACKAGE}.lintian-overrides" >/dev/null <<EOF
+${PACKAGE} binary: binary-without-manpage *
+${PACKAGE} binary: icon-size-and-directory-name-mismatch *
+EOF
+
 # Fix debian/copyright
 COPYRIGHT_YEAR="$(awk '/^Copyright/ {gsub(/-.+/, "", $3); print $3; exit}' COPYING)"
 COPYRIGHT_OWNER="$(awk '/^Copyright/ {print $(NF-2)" "$(NF-1)" "$NF; exit}' COPYING)"
@@ -52,7 +58,7 @@ run dch -D "${DISTRO}" --create --package "${PACKAGE}" --newversion "${VERSION}"
 
 # Fix debian/control
 DESCRIPTION="$(awk 'f{gsub(/\[.+\].*\)/, "KeePassX", $0); print $0;f=0} /## About/{f=1}' README.md | fold -s -w 60 | sed -r 's|^[\ \t]*||g; s|^(.)| \1|')"
-SHORT_DESCRIPTION="$(awk -F' - ' '/^# KeePassXC/ {print $NF}' README.md)"
+SHORT_DESCRIPTION="$(awk -F' - ' '/^KeePass / {print $NF}' README.md)"
 export DESCRIPTION SHORT_DESCRIPTION
 
 run sed -i '/^#/d' debian/control
@@ -70,6 +76,7 @@ then
     cd ../ && rm -rf "${PACKAGE}"
 else
     echo "Build failed!"
+    exit 1
 fi
 
-exit
+exit 0
