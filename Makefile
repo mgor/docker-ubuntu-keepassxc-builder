@@ -7,7 +7,7 @@ USER_ID := $(shell id -u)
 GROUP_ID := $(shell id -g)
 
 ifndef RELEASE
-	RELEASE := yakkety
+	RELEASE := zesty
 endif
 
 all: build clean run
