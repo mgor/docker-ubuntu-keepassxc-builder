@@ -2,7 +2,6 @@ FROM mgor/docker-ubuntu-pkg-builder:RELEASE
 
 MAINTAINER Mikael Göransson <github@mgor.se>
 
-RUN locale-gen en_US.UTF-8
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV BUILD_DIRECTORY /usr/local/src
@@ -14,7 +13,8 @@ ENV LC_ALL en_US.UTF-8
 # Using apt-get due to warning with apt:
 # WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
 RUN apt-get update && \
-    apt-get install -y apt-utils && \
+    apt-get install -y apt-utils locales && \
+    locale-gen en_US.UTF-8 && \
     apt-get install -y \
         sudo \
         libxi-dev \
@@ -26,7 +26,8 @@ RUN apt-get update && \
         qttools5-dev-tools \
         cmake \
         libxtst-dev \
-        libqt5x11extras5-dev && \
+        libqt5x11extras5-dev \
+	&& \
     # Clean up!
     rm -rf /var/lib/apt/lists/*
 
