@@ -19,7 +19,7 @@ chown "${USER}" . && \
 run git clone "${URL}.git" "${PACKAGE}" && \
 cd "${PACKAGE}" || exit
 
-run cmake -DCMAKE_INSTALL_PREFIX=/usr -DWITH_XC_AUTOTYPE=ON -DWITH_XC_HTTP=ON -DCMAKE_BUILD_TYPE=Release
+run cmake -DCMAKE_INSTALL_PREFIX=/usr -DWITH_XC_AUTOTYPE=ON -DWITH_XC_BROWSER=ON -DCMAKE_BUILD_TYPE=Release
 
 VERSION="$(git tag | sort -u | tail -1)-$(date +"%Y%m%d")-$(git rev-parse --short HEAD)"
 export VERSION
