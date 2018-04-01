@@ -22,7 +22,7 @@ cd "${PACKAGE}" || exit
 KEEPASSXC_VERSION="$(git tag | tail -1)"
 export KEEPASSXC_VERSION
 
-git checkout "tags/${KEEPASSXC_VERSION}" -b "${KEEPASSXC_VERSION}"
+run git checkout "tags/${KEEPASSXC_VERSION}" -b "${KEEPASSXC_VERSION}"
 
 run cmake -DCMAKE_INSTALL_PREFIX=/usr -DWITH_XC_AUTOTYPE=ON -DWITH_XC_BROWSER=ON -DCMAKE_BUILD_TYPE=Release
 
