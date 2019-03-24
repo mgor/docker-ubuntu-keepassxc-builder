@@ -27,8 +27,12 @@ RUN apt-get update && \
         cmake \
         libxtst-dev \
         libqt5x11extras5-dev \
+        libqt5svg5-dev \
         libargon2-0-dev \
         libsodium-dev \
+        libcurl4 \
+        libqrencode3 \
+        libqrencode-dev \
 	&& \
     # Clean up!
     rm -rf /var/lib/apt/lists/*

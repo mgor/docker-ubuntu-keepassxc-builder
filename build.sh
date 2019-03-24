@@ -19,14 +19,16 @@ chown "${USER}" . && \
 run git clone "${URL}.git" "${PACKAGE}" && \
 cd "${PACKAGE}" || exit
 
-KEEPASSXC_VERSION="$(git tag | tail -1)"
-export KEEPASSXC_VERSION
+BASE_VERSION="$(git tag | awk -F- '{print $1}' | sort -u | tail -1)"
+KEEPASSXC_VERSION="$(git tag | grep "${BASE_VERSION}" | head -1)"
+export KEEPASSXC_VERSION="2.4.1"
 
-run git checkout "tags/${KEEPASSXC_VERSION}" -b "${KEEPASSXC_VERSION}"
+#run git checkout "tags/${KEEPASSXC_VERSION}" -b "${KEEPASSXC_VERSION}"
+run git checkout "release/2.4.1" -b "${KEEPASSXC_VERSION}"
 
 run cmake -DCMAKE_INSTALL_PREFIX=/usr -DWITH_XC_AUTOTYPE=ON -DWITH_XC_BROWSER=ON -DCMAKE_BUILD_TYPE=Release
 
-VERSION="$(git tag | sort -u | tail -1)-$(date +"%Y%m%d")-$(git rev-parse --short HEAD)"
+VERSION="${KEEPASSXC_VERSION}-$(date +"%Y%m%d")-$(git rev-parse --short HEAD)"
 export VERSION
 
 run dh_make -p "${PACKAGE}_${VERSION}" -s -y --createorig
@@ -51,7 +53,7 @@ Source: $(git config remote.origin.url)
 
 Files: *
 Copyright: ${COPYRIGHT_YEAR} ${COPYRIGHT_OWNER}
-License: Custom
+License: GPL-2 or GPL-3
 EOF
 
 #shellcheck disable=SC2002
